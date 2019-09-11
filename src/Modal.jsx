@@ -69,17 +69,19 @@ class Modal extends React.Component {
 
       if (this.props.fade) {
         this.setState({ transitioning: true, modalIndex: modalsShowing }, () => {
-          window.setTimeout(() => {
-            if (!this.unmounting) {
-              this.setState({ visible: this.props.visible }, () => {
-                window.setTimeout(() => {
-                  if (!this.unmounting) {
-                    this.setState({ transitioning: false });
-                  }
-                }, 150);
-              });
-            }
-          }, 16); // I don't like this magic number but I haven't found a better way
+          if (typeof window !== 'undefined') {
+            window.setTimeout(() => {
+              if (!this.unmounting) {
+                this.setState({ visible: this.props.visible }, () => {
+                  window.setTimeout(() => {
+                    if (!this.unmounting) {
+                      this.setState({ transitioning: false });
+                    }
+                  }, 150);
+                });
+              }
+            }, 16); // I don't like this magic number but I haven't found a better way
+          }
         });
       } else {
         this.setState({ visible: this.props.visible });
